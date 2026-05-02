@@ -24,7 +24,7 @@ def edge_sketch(image):
 # ----------- Process Single Image -----------
 
 def process_single(input_path, output_path, mode="classic",
-                   blur=21, strength=256):
+                    blur=21, strength=256):
 
     img = cv2.imread(input_path)
 
