@@ -1,25 +1,7 @@
 import cv2
 import numpy as np
 import os
-
-
-
-def pencil_sketch(image, blur_ksize=21, strength=256):
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    inverted = 255 - gray
-    blurred = cv2.GaussianBlur(inverted, (blur_ksize, blur_ksize), 0)
-    inverted_blur = 255 - blurred
-    sketch = cv2.divide(gray, inverted_blur, scale=strength)
-    return sketch
-
-
-def edge_sketch(image):
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    smooth = cv2.bilateralFilter(gray, 9, 75, 75)
-    edges = cv2.Canny(smooth, 50, 150)
-    return edges
-
-
+from sketch import pencil_sketch, edge_sketch
 
 def process_single(input_path, output_path, mode="classic",
                     blur=21, strength=256):
@@ -30,7 +12,6 @@ def process_single(input_path, output_path, mode="classic",
         print(f" Error reading: {input_path}")
         return
 
-    # Ensure blur is odd
     if blur % 2 == 0:
         blur += 1
 
@@ -52,11 +33,7 @@ def process_single(input_path, output_path, mode="classic",
 
 
 
-def process_folder(input_folder="images",
-                   output_folder="outputs",
-                   mode="classic",
-                   blur=21,
-                   strength=256):
+def process_folder(input_folder="images", output_folder="outputs", mode="classic", blur=21, strength=256):
 
     if not os.path.exists(input_folder):
         print(" Input folder not found!")
@@ -71,14 +48,13 @@ def process_folder(input_folder="images",
             input_path = os.path.join(input_folder, filename)
             output_path = os.path.join(output_folder, "sketch_" + filename)
 
-            process_single(input_path, output_path,
-                           mode, blur, strength)
+            process_single(input_path, output_path, mode, blur, strength)
 
 
 
 if __name__ == "__main__":
 
-    print("=== Pencil Sketch Converter ===")
+    print("Pencil Sketch Converter")
 
     # User inputs
     mode = input("Choose mode (classic / edge): ").strip().lower()

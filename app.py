@@ -3,41 +3,7 @@ import cv2
 import numpy as np
 import streamlit as st
 from PIL import Image
-
-
-# ----------- Sketch Functions -----------
-
-def pencil_sketch(image, blur_ksize=21, strength=256):
-    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-
-    inverted = 255 - gray
-
-    if blur_ksize < 3:
-        blur_ksize = 3
-
-    if blur_ksize % 2 == 0:
-        blur_ksize += 1
-
-    blurred = cv2.GaussianBlur(inverted, (blur_ksize, blur_ksize), 0)
-
-    inverted_blur = 255 - blurred
-
-    sketch = cv2.divide(gray, inverted_blur, scale=strength)
-
-    return sketch
-
-
-def edge_sketch(image):
-    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-
-    smooth = cv2.bilateralFilter(gray, 9, 75, 75)
-
-    edges = cv2.Canny(smooth, 50, 150)
-
-    edges = 255 - edges
-
-    return edges
-
+from sketch import pencil_sketch, edge_sketch
 
 def convert_to_downloadable_image(image_array):
     image_pil = Image.fromarray(image_array)
@@ -47,15 +13,13 @@ def convert_to_downloadable_image(image_array):
     return buffer
 
 
-# ----------- Streamlit App -----------
-
 st.set_page_config(
     page_title="Pencil Sketch Converter",
     page_icon="✏️",
     layout="wide"
 )
 
-st.title("✏️ Image to Pencil Sketch Converter")
+st.title("Image to Pencil Sketch Converter")
 
 st.write(
     "Upload a color image and convert it into a pencil-sketch-style image "
