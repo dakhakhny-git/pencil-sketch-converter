@@ -3,7 +3,6 @@ import numpy as np
 import os
 
 
-# ----------- Sketch Functions -----------
 
 def pencil_sketch(image, blur_ksize=21, strength=256):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -21,7 +20,6 @@ def edge_sketch(image):
     return edges
 
 
-# ----------- Process Single Image -----------
 
 def process_single(input_path, output_path, mode="classic",
                     blur=21, strength=256):
@@ -29,7 +27,7 @@ def process_single(input_path, output_path, mode="classic",
     img = cv2.imread(input_path)
 
     if img is None:
-        print(f"❌ Error reading: {input_path}")
+        print(f" Error reading: {input_path}")
         return
 
     # Ensure blur is odd
@@ -45,14 +43,14 @@ def process_single(input_path, output_path, mode="classic",
         result = cv2.bitwise_and(sketch, edges)
 
     else:
-        print("❌ Invalid mode")
+        print(" Invalid mode")
         return
 
     cv2.imwrite(output_path, result)
-    print(f"✅ Saved: {output_path}")
+    print(f" Saved: {output_path}")
 
 
-# ----------- Process Folder -----------
+
 
 def process_folder(input_folder="images",
                    output_folder="outputs",
@@ -61,7 +59,7 @@ def process_folder(input_folder="images",
                    strength=256):
 
     if not os.path.exists(input_folder):
-        print("❌ Input folder not found!")
+        print(" Input folder not found!")
         return
 
     if not os.path.exists(output_folder):
@@ -77,7 +75,6 @@ def process_folder(input_folder="images",
                            mode, blur, strength)
 
 
-# ----------- MAIN -----------
 
 if __name__ == "__main__":
 
